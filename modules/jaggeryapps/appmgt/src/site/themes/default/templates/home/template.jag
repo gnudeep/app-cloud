@@ -110,8 +110,8 @@ jagg.template("home", function(inputs, outputs, jagg) {
     var pollEventsOfToolKey = null;
     var pollEventsKey = null;
     var sourceLocation = "<%=sourcelocation%>";
-    var runtimeProperties = JSON.stringify(<%=runtimeProps%>);
-    var isBallerinaComposerAvailable = <%=isBallerinaComposerAvailable%>;
+    var runtimeProperties = "<%=runtimeProperties%>";
+    var isBallerinaComposerAvailable = <%=isBallerinaComposerAvailable%>
 
 </script>
 
