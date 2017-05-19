@@ -173,10 +173,9 @@ var updateDeployment = function (appType, applicationName, versionName, runtimeI
     var parsedObject = parse(appTypePropertyConfPath);
     var appTypesProperties = require(parsedObject);
     var appTypeExtension = appTypesProperties[appType].extension;
-    var artifactUrl = "-r -nH -nd -np -R  --no-parent  http://" + fileServerAdminUsername + ":" + fileServerAdminPassword + "@" + fileServerUrl + "/" +
-            modManager.getTenantDomain() + "/" + appType + "/" + applicationName + " -A '*.bal'";
-    //" + TARGET_DIRECTORY +
-      //      applicationName + "." + appTypeExtension;
+    var artifactUrl = "http://" + fileServerAdminUsername + ":" + fileServerAdminPassword + "@" + fileServerUrl + "/" +
+            modManager.getTenantDomain() + "/" + appType + "/" + applicationName + TARGET_DIRECTORY +
+            applicationName + "." + appTypeExtension;
     var uploadedFileName = versionHashId + "." + appTypeExtension;
     var imageName;
     var readyToTriggerDeployment = true;
@@ -515,9 +514,6 @@ var createDockerFile = function (applicationName, versionName, appTypeName, runt
              uploadArtifactTmpName = uploadedFileName;
         }
         var dockerFilePropertyMap = new java.util.HashMap();
-        if(appCreationMethod == START_FROM_SCRATCH) {
-            dockerFilePropertyMap = "*.bal";
-        }
         dockerFilePropertyMap.put("ARTIFACT_NAME", uploadArtifactTmpName);
         dockerFilePropertyMap.put("HOST_NAME", hostName);
         dockerFilePropertyMap.put("ARTIFACT_URL", artifactUrl);

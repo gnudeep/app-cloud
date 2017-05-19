@@ -18,20 +18,13 @@
 #
 # ------------------------------------------------------------------------
 
-FROM docker.wso2.com/wso2-cloud/java:ubuntu16.04-oracle-jdk1.8.0_112
+FROM docker.wso2.com/wso2-cloud/java:alpine3.4-oracle-jdk1.8.0_112
 
 ENV APP_HOME /srv/ballerina
-ENV APP_VERSION 0.86
+ENV APP_VERSION 0.87
 ENV RUNTIME_DISTRIBUTION_NAME ballerina-$APP_VERSION.zip
 ENV RUNTIME_NAME ballerina-$APP_VERSION
 ADD init.sh /init.sh
-
-RUN apt-get update && apt-get install -y pwgen && \
-    addgroup wso2 && \
-    adduser --system --shell /bin/bash --gecos 'WSO2User' --ingroup wso2 --disabled-login wso2user && \
-    apt-get clean && \
-    rm -rf /var/cache/*
-
 RUN chmod +x /init.sh && \
     mkdir -p "$APP_HOME" && \
     mkdir -p "/srv/logs" && \

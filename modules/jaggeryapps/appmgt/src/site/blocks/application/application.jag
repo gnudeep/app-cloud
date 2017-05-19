@@ -740,7 +740,7 @@ var log = new Log();
             if (buildStatus) {
                 applicationModule.updateDeployment(appType, applicationName, versionName, runtimeId,
                         runtimeProperties, conSpecMemory, replicas, conSpecCpu, sourceLocation, applicationHashId,
-                        versionKey, "default");
+                        versionKey, START_FROM_SCRATCH);
             }
             print(true);
         } catch (e) {
