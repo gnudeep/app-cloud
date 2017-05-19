@@ -38,6 +38,39 @@ var type = "json";
 
 // download the built artifact via mgtapp
 var downloadArtifact = function(appType, sourceDir, fileType) {
+
+    var p = new java.lang.Process();
+    try {
+        log.info("Executing: " + cleanCommand);
+        p = Runtime.getRuntime().exec(cleanCommand);
+        p.waitFor();
+        log.info("Executing: " + createTargetCommand);
+        p = Runtime.getRuntime().exec(createTargetCommand);
+        p.waitFor();
+        log.info("Executing: " + command);
+        p = Runtime.getRuntime().exec(command);
+        p.waitFor();
+
+        File f = new File(dirPath + "/target/" + sourceDir + ".bsz");
+        if(f.exists() && !f.isDirectory()) {
+            log.info("-------------------------------------");
+            log.info("BUILD SUCCESS: " + sourceDir);
+            log.info("-------------------------------------");
+            return true;
+        } else {
+            log.info("-------------------------------------");
+            log.info("BUILD FAILED: " + sourceDir);
+            log.info("-------------------------------------");
+            return false;
+        }
+    } catch (IOException e) {
+        log.error(e.getMessage());
+        return false;
+    } catch (InterruptedException e) {
+        log.error(e.getMessage());
+        return false;
+    }
+
     var tanantDomain = modManager.getTenantDomain();
     var url = mgtAppUrl + "/downloadArtifact/" + tanantDomain +"/" + appType + "/" + sourceDir + "/" + fileType;
     var result = get(url, null, headers, type);

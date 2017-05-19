@@ -63,6 +63,7 @@ public class ManagementService {
             }
 
             //Adding package name for initial sample.
+            /*
             if(file.exists()) {
                 String dirPath =
                         System.getenv(Constants.SOURCE_LOCATION) + "/" + tenantDomain + "/" + appType + "/" + sourceDir;
@@ -79,6 +80,7 @@ public class ManagementService {
                 }
                 Files.write(Paths.get(dirPath + "/" + sample + ".bal"), newLines, StandardCharsets.UTF_8);
             }
+            */
         } catch (IOException ex) {
             log.error(ex);
             return false;
@@ -133,12 +135,13 @@ public class ManagementService {
 
         String dirPath = System.getenv(Constants.SOURCE_LOCATION) + "/" + tenantDomain + "/" + appType + "/" + sourceDir;
 
-        String cleanCommand = "rm -rf " + dirPath + "/target/";
-        String createTargetCommand = "mkdir " + dirPath + "/target";
+        String moveToSourceLocationCommand = "cd " + dirPath;
+        String cleanCommand = "rm -rf target/";
+        String createTargetCommand = "mkdir target";
         String ballerinaRuntime = System.getenv(Constants.BALLERINA_HOME) + "/" + System.getenv(Constants.BALLERINA_RUNTIME) + "/" + "bin/ballerina";
 
         String ballerinaBuildCommand = "build service " + dirPath +  "/ -o " + dirPath + "/target/" + sourceDir;
-        String command = ballerinaRuntime + " " + ballerinaBuildCommand;
+        String command = "." + ballerinaRuntime + " " + ballerinaBuildCommand;
 
         log.info("-------------------------------------");
         log.info("BUILDING: " + sourceDir);
