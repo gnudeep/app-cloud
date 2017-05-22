@@ -150,4 +150,5 @@ var FILE_SERVER_ADMIN_USERNAME = "FileServerAdminUsername";
 var FILE_SERVER_ADMIN_PASSWORD = "FileServerAdminPassword";
 var TARGET_DIRECTORY = "/target/";
 var START_FROM_SCRATCH = "start-from-scratch";
+var SEARCH_CRITERIA_ALL = "all";
 %>
