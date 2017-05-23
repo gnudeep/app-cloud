@@ -29,7 +29,6 @@ jagg.template("index", function(inputs, outputs, jagg) {
     var docURL = outputs.docURL;
     var cloudSpecificApplicationRepresentation = outputs.cloudSpecificApplicationRepresentation;
     var log = new Log("index");
-
     %>
 
     <script type="text/javascript" xmlns="http://www.w3.org/1999/html" charset="utf-8">
@@ -38,9 +37,6 @@ jagg.template("index", function(inputs, outputs, jagg) {
         var taggedApplicationsList;
         var searchbox;
         var searchCriteria = SEARCH_CRITERIA_ALL;
-
-
-
 
         $(document).on("click","#app-category li", function(e){
             $('.active').removeClass('active');
