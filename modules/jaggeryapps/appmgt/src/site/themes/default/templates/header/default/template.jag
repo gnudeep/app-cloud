@@ -304,11 +304,11 @@ $zopim(function () {
                     }
                 });
             } else{
-                jagg.popMessage({
-                    content:"Unfortunately your trial period is expired, " +
+                jagg.infoMessage({
+                content:"Unfortunately your trial period is expired, " +
                      "Please contact organization administrator for more details.",
-                    title:"Trial Expired"
-                });
+                okText:"Ok",
+                })
             }
         }
 
