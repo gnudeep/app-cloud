@@ -52,13 +52,13 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 INSERT INTO `AC_APP_TYPE` (`id`, `name`, `description`) VALUES
 (1, 'war', 'Allows you to create dynamic websites using Servlets and JSPs and deploy web services.'),
-(2, 'mss', 'Allows you to create microservices in Java, using an annotation-based programming model. MSF4J stands for Microservices Framework for Java.'),
+(2, 'mss', 'Allows you to deploy Java Microservices (MSF4J)'),
 (3, 'php', 'Allows you to create dynamic web pages and complete server applications using PHP web applications.'),
 (4, 'jaggery', 'Allows you to write all parts of web applications, services and APIs in a completely JavaScript way.'),
 (5, 'wso2dataservice', 'Allows you to deploy a data service that is supported in WSO2 Data Services Server.'),
 (6, 'wso2esb', 'Allows you to deploy an ESB configuration that is supported by WSO2 Enterprise Service Bus'),
 (7, 'custom', 'Allows you to deploy applications using custom Docker images'),
-(8, 'ballerina', 'Allows you to deploy Ballerina service. Ballerina is a general purpose, concurrent and strongly typed programming language with both textual and graphical syntaxes.'),
+(8, 'ballerina', 'Allows you to deploy an integration scenario developed by Ballerina.'),
 (9, 'nodejs', 'Allows you to deploy Node.Js applications'),
 (10, 'ballerina-composer', 'Allows you to open a Ballerina Composer');
 
