@@ -29,8 +29,6 @@ jagg.template("index", function(inputs, outputs, jagg) {
     var docURL = outputs.docURL;
     var cloudSpecificApplicationRepresentation = outputs.cloudSpecificApplicationRepresentation;
     var log = new Log("index");
-
-
     %>
 
     <script type="text/javascript" xmlns="http://www.w3.org/1999/html" charset="utf-8">
@@ -38,7 +36,6 @@ jagg.template("index", function(inputs, outputs, jagg) {
         var cloudSpecificApplicationRepresentation = "<%=cloudSpecificApplicationRepresentation%>";
         var taggedApplicationsList;
         var searchbox;
-
         var SEARCH_CRITERIA_ALL = "<%=SEARCH_CRITERIA_ALL%>";
         var searchCriteria = "<%=SEARCH_CRITERIA_ALL%>";
 
@@ -96,7 +93,6 @@ jagg.template("index", function(inputs, outputs, jagg) {
                             addTableRow(element);
                         }
                     });
-
                     if ($("#item_list").children().length <= 1) {
                         $("#item_list").append($('<div class="col-centered col-md-4 "><div class="cloud-new-content"> ' +
                          '<h3>Your search "'+finder+'" did not match any ' + cloudSpecificApplicationRepresentation.toLowerCase() + '.</h3></div></div>'));
@@ -377,6 +373,5 @@ jagg.template("index", function(inputs, outputs, jagg) {
      </div><!-- /.modal -->
 
     <script src="/appmgt/site/themes/default/js/app-listing-tile-icon.js"></script>
-
 <%
 }); %>
