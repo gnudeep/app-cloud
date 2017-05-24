@@ -62,7 +62,16 @@ jagg.template("home", function(inputs, outputs, jagg) {
     var toolPrefix = TOOL_PREFIX;
     var newTab = null;
     var domainURL = outputs.domainURL;
-    var runtimeProperties = selectedApplicationRevision.runtimeProperties;
+    var runtimePropertiesWithIds = selectedApplicationRevision.runtimeProperties;
+    var runtimeProperties = [];
+    for (var i = 0; i < runtimePropertiesWithIds.length.toString(); i++) {
+        var runtimeProperty = {
+            "key": runtimePropertiesWithIds[i].propertyName,
+            "value": runtimePropertiesWithIds[i].propertyValue
+        };
+        runtimeProperties.push(runtimeProperty);
+    }
+    runtimeProperties = encodeURIComponent(stringify(runtimeProperties), "UTF-8");
     var isBallerinaComposerAvailable = versions[BALLERINA_COMPOSER];
 
 %>
@@ -155,23 +164,31 @@ jagg.template("home", function(inputs, outputs, jagg) {
                         <div class="row nomarginflex">
                           <div class="btn-group pull-left version-number">
                               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              <span id="selected-version"><%=selectedRevision%> </span><span class="caret"></span>
+                                <span id="selected-version"><%=selectedRevision%> </span><span class="caret"></span>
                               </button>
-                              <ul id="appVersionList" class="dropdown-menu" >
-                              <%
-                                for (var x = 0; x < versionArray.length; x++) {
-                              %>
-                                  <li><a href="#"><%=versionArray[x]%></a></li>
-                              <%
-                              }
-                              %>
-                                <li>
-                                    <a href="<%=jagg.getAbsoluteUrl('/site/pages/options.jag')%>?appTypeName=<%=application.applicationType%>&applicationName=<%=applicationName%>&encodedLabels=<%=encodedLabels%>&encodedEnvs=<%=encodedEnvs%>&newVersion=true&conSpecCpu=<%=conSpecCpu%>&conSpecMemory=<%=conSpecMemory%>&versionArray=<%=encodedVersionArray%>" class="option_link">
-                                        + Add
-                                    </a>
-                                </li>
+                              <ul id="appVersionList" class="dropdown-menu version-dropdown">
+                                  <%
+                                    for (var x = 0; x < versionArray.length; x++) {
+                                  %>
+                                      <li>
+                                        <a><%=versionArray[x]%></a>
+                                        <div class="ctrl-edit-button cu-btn-gr-dark btn-remove" data-toggle="tooltip" title="Delete this version">
+                                            <a href="#" class="btn cu-btn cu-btn-sm cu-btn-icon" onclick="deleteApplicationPopUp('<%=versionArray[x]%>');">
+                                                <i class="fw fw-delete"></i>
+                                            </a>
+                                        </div>
+                                      </li>
+                                  <%
+                                  }
+                                  %>
                               </ul>
                           </div>
+                          <div class="btn-group ctrl-edit-button cu-btn-gr-dark" data-toggle="tooltip" title="Add New Version">
+                                <a class="btn cu-btn cu-btn-md cu-btn-icon" href="<%=jagg.getAbsoluteUrl('/site/pages/options.jag')%>?appTypeName=<%=application.applicationType%>&applicationName=<%=applicationName%>&encodedLabels=<%=encodedLabels%>&encodedEnvs=<%=encodedEnvs%>&newVersion=true&conSpecCpu=<%=conSpecCpu%>&conSpecMemory=<%=conSpecMemory%>&versionArray=<%=encodedVersionArray%>">
+                                    <i class="fw fw-add"></i>
+                                </a>
+                          </div>
+
                           <div id="version-url-link" class="version-url" title="<%=selectedApplicationRevision.deploymentURL%>">
                           <% if(selectedApplicationRevision.status==APPLICATION_RUNNING){ %>
                             <a id="launch-version-url-a" href="<%=selectedApplicationRevision.deploymentURL%>" target="_blank">
@@ -235,15 +252,6 @@ jagg.template("home", function(inputs, outputs, jagg) {
                                %>
                       </div>
                       <div class="col-xs-12 col-md-12 col-lg-5 overview-version-btn">
-
-                          <a id="delete-version" onclick="deleteApplicationPopUp();">
-                              <div class="btn-create-version">
-                                  <span class="fw-stack fw-lg btn-action-ico">
-                                    <i class="fw fw-circle-outline fw-stack-2x"></i>
-                                    <i class="fw fw-delete fw-stack-1x"></i>
-                                  </span> Delete Version
-                              </div>
-                          </a>
 
                          <% if (application.applicationType == "ballerina" && selectedApplicationRevision.sourceLocation != null) { %>
                              <% if (versions[BALLERINA_COMPOSER] != null) { %>
@@ -362,45 +370,12 @@ jagg.template("home", function(inputs, outputs, jagg) {
 <script>
 
     function openTool() {
-        var toolLoadingPage = "" +
-                    "<html>" +
-                    "<head>" +
-                    "<style>" +
-                    "#loader {" +
-                      "position: absolute;" +
-                      "left: 50%;" +
-                      "top: 50%;" +
-                      "z-index: 1;" +
-                      "width: 150px;" +
-                      "height: 150px;" +
-                      "margin: -75px 0 0 -75px;" +
-                      "border: 6px solid #f5f5f5;" +
-                      "border-radius: 50%;" +
+        var toolLoadingPage = getBallerinaComposerLoader();
 
-                     "border-top: 6px solid #f17b31;" +
-                      "width: 120px;" +
-                      "height: 120px;" +
-                      "-webkit-animation: spin 1s linear infinite;" +
-                      "animation: spin 1s linear infinite;" +
-                    "}" +
-
-                    "@-webkit-keyframes spin {" +
-                      "0% { -webkit-transform: rotate(0deg); }" +
-                      "100% { -webkit-transform: rotate(360deg); }" +
-                    "}" +
-
-                    "@keyframes spin {" +
-                      "0% { transform: rotate(0deg); }" +
-                      "100% { transform: rotate(360deg); }" +
-                    "}" +
-                    "</style>" +
-                    "</head>" +
-                    "<body>" +
-                    "<div id='loader'></div>" +
-                    "</body>" +
-                    "</html>";
         newTab = window.open('', '_blank');
         newTab.document.write(toolLoadingPage);
+
+        //newTab.document.write(toolLoadingPage);
         var applicationNameOfTool = applicationName;
         var versionOfTool = "ballerina-composer";
         executeAsync(drawProgressWindowForTool("Starting ..."));
@@ -805,6 +780,7 @@ jagg.template("home", function(inputs, outputs, jagg) {
 <script src="<%=jagg.getAbsoluteUrl(jagg.getThemeFile('templates/home/js/home.js'))%>"></script>
 <script src="<%=jagg.getAbsoluteUrl(jagg.getThemeFile('templates/home/js/endpoint.js'))%>"></script>
 <script src="<%=jagg.getAbsoluteUrl(jagg.getThemeFile('templates/home/js/dashboard.js'))%>"></script>
+<script src="<%=jagg.getAbsoluteUrl(jagg.getThemeFile('templates/home/js/ballerina-composer-loading.js'))%>"></script>
 <script src="/appmgt/site/themes/default/js/app-listing-tile-icon.js"></script>
 
 <%

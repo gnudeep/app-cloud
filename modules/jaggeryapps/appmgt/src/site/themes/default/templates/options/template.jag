@@ -20,27 +20,15 @@
 include("/jagg/jagg.jag");
 
 jagg.template("options", function(inputs, outputs, jagg) {
-
     var appTypeName = request.getParameter("appTypeName");
     var newVersion = request.getParameter("newVersion");
-    var conSpecCpu = request.getParameter("conSpecCpu");
-    var conSpecMemory = request.getParameter("conSpecMemory");
-    var versionArray = request.getParameter("versionArray");
-    var applicationName = request.getParameter("applicationName");
-    var encodedLabels = request.getParameter("encodedLabels");
-    var encodedEnvs = request.getParameter("encodedEnvs");
-
+    var queryString = request.getQueryString();
 %>
 
 <script type="text/javascript">
     var appTypeName = "<%=appTypeName%>";
     var newVersion = "<%=newVersion%>";
-    var conSpecCpu = "<%=conSpecCpu%>";
-    var conSpecMemory = "<%=conSpecMemory%>";
-    var versionArray = "<%=versionArray%>";
-    var applicationName = "<%=applicationName%>";
-    var encodedLabels = "<%=encodedLabels%>";
-    var encodedEnvs = "<%=encodedEnvs%>";
+    var queryString = '<%=queryString%>';
 </script>
 
 <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -50,6 +38,17 @@ jagg.template("options", function(inputs, outputs, jagg) {
 <script src="<%=jagg.getAbsoluteUrl(jagg.getThemeFile('templates/options/js/options.js'))%>"></script>
 <script src="<%=jagg.getAbsoluteUrl(jagg.getThemeFile('js/custom/loader.js'))%>"></script>
 
+
+<% if (newVersion == "true") { %>
+   <div class="action-bar">
+            <a onclick="goBack();" class="btn-action">
+                <span class="fw-stack fw-lg btn-action-ico">
+                    <i class="fw fw-circle-outline fw-stack-2x"></i>
+                    <i class="fw fw-left-arrow fw-stack-1x"></i>
+                </span> Back to App Home
+            </a>
+    </div>
+<% } else { %>
    <div class="action-bar">
        <a href="/appmgt/site/pages/select-apptype.jag" class="btn-action">
                <span class="fw-stack fw-lg btn-action-ico">
@@ -58,6 +57,7 @@ jagg.template("options", function(inputs, outputs, jagg) {
                </span> <span class="hidden-xs">Back to App Type Selection</span>
         </a>
     </div>
+<% } %>
 
     <div class="container-fluid app-type-options padding-bottom-xlg padding-top-xlg">
         <h2 class="margin-bottom-25 margin-left-40">
@@ -65,13 +65,13 @@ jagg.template("options", function(inputs, outputs, jagg) {
         </h2>
 
         <div class="list-group">
-        <% if (appTypeName == "ballerina") { %>
+        <% if (appTypeName == "ballerina-hide") { %>
           <a href="#" class="list-group-item list-group-item-action flex-column align-items-start option-block margin-bottom-5">
           <div class="ribbon-wrapper"><div class="ribbon">Beta</div></div>
             <div class="d-flex w-100 justify-content-between">
-              <h4 class="margin-bottom-10 font-size-20">Create on Ballerina Composer</h4>
+              <h4 class="margin-bottom-10 font-size-20">Use Ballerina Composer</h4>
             </div>
-            <p class="margin-bottom-10 desc-color">This option will let you develop your Ballerina Service on cloud via Ballerina Composer. Initially this will start with Ballerina hello service and later on you can modify the code via Ballerina Composer in Cloud.</p>
+            <p class="margin-bottom-10 desc-color">Lets you develop your Ballerina service on the Cloud, via the Ballerina Composer, which is a visual tool that lets you code with diagrams. The Composer starts with a “hello” service that you can modify as you like.</p>
             <div class="width-100">
             <button type="button" class="btn btn-primary btn-block" id="continue-composer" onclick="continueCreateNew();">
             Create
@@ -98,7 +98,7 @@ jagg.template("options", function(inputs, outputs, jagg) {
                     </label>
             <% } %>
                 </div>
-            <p class="margin-bottom-10 desc-color">This option will let you upload an existing application that you have already developed via local file system or web.</p>
+            <p class="margin-bottom-10 desc-color">Lets you upload an application that you have already developed via the local file system or the web.</p>
             <div class="width-100">
             <button type="button" class="btn btn-primary btn-block" onclick="loadCreateApp('<%=appTypeName%>');">
             Continue
@@ -110,7 +110,8 @@ jagg.template("options", function(inputs, outputs, jagg) {
             <div class="d-flex w-100 justify-content-between">
               <h4 class="margin-bottom-10 font-size-20">Tryout Samples</h4>
             </div>
-            <p class="margin-bottom-10 desc-color">This option will create and deploy a sample application to the Cloud. You can use the launch URL in application home page to try out the sample.</p>
+            <p class="margin-bottom-10 desc-color">Deploys a sample application to the Cloud. To try out the sample, use the launch URL on the application’s homepage.
+</p>
             <div class="width-100">
             <button type="button" class="btn btn-primary btn-block" id="continue-sample" onclick="continueSample();">
             Try
