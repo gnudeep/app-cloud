@@ -29,6 +29,8 @@ jagg.template("index", function(inputs, outputs, jagg) {
     var docURL = outputs.docURL;
     var cloudSpecificApplicationRepresentation = outputs.cloudSpecificApplicationRepresentation;
     var log = new Log("index");
+
+
     %>
 
     <script type="text/javascript" xmlns="http://www.w3.org/1999/html" charset="utf-8">
@@ -36,7 +38,9 @@ jagg.template("index", function(inputs, outputs, jagg) {
         var cloudSpecificApplicationRepresentation = "<%=cloudSpecificApplicationRepresentation%>";
         var taggedApplicationsList;
         var searchbox;
-        var searchCriteria = SEARCH_CRITERIA_ALL;
+
+        var SEARCH_CRITERIA_ALL = "<%=SEARCH_CRITERIA_ALL%>";
+        var searchCriteria = "<%=SEARCH_CRITERIA_ALL%>";
 
         $(document).on("click","#app-category li", function(e){
             $('.active').removeClass('active');
@@ -99,12 +103,12 @@ jagg.template("index", function(inputs, outputs, jagg) {
                     }
                 }
             });
+
             if ($("#item_list").children().length < 1 && searchCriteria != SEARCH_CRITERIA_ALL) {
                 $("#item_list").append($('<div class="col-centered col-md-4 "><div class="cloud-new-content"> ' +
                  '<h3>Your search did not match any application.</h3></div></div>'));
             }
         }
-
 
         $(document).ready(function (){
             drawApplicationList();
