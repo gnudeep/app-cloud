@@ -907,8 +907,10 @@ function buildVolumeMounts(appTypeName, sourceLocation) {
 
         var volumnMount = new Packages.org.wso2.appcloud.provisioning.runtime.beans.VolumeMountInfo();
         volumnMount.setMountPath(modManager.getPropertyValue("ballerina-composer_source_path") + "/source");
-        volumnMount.setName("source-location");
-        volumnMount.setHostPath(modManager.getPropertyValue("ballerina-composer_host_path") + "/" + modManager.getTenantDomain() + "/ballerina/" + sourceLocation);
+        volumnMount.setName("nfs");
+        volumnMount.setSubPath(modManager.getTenantDomain() + "/ballerina/" + sourceLocation);
+        volumnMount.setNfsPath(modManager.getPropertyValue("nfs_path"));
+        volumnMount.setNfsServer(modManager.getPropertyValue("setNfsServer"));
         volumnMount.setReadOnly(false);
 
         volumnMounts.add(volumnMount);
@@ -925,6 +927,7 @@ function buildEnvironmentVariable(appTypeName, envs, versionHashId) {
         envs.put("LAUNCHER_PATH_URL", versionHashId + ".bcw." + modManager.getPropertyValue("ApplicationLaunchBaseURL.Public"));
         envs.put("DEBUGGER_PATH_URL", versionHashId + ".bcd." + modManager.getPropertyValue("ApplicationLaunchBaseURL.Public"));
         envs.put("ROOT_DIR_PATH", modManager.getPropertyValue("ballerina-composer_source_path"));
+        envs.put("TRY_SERVICE_URL", "http://" + versionHashId + ".htp." + modManager.getPropertyValue("ApplicationLaunchBaseURL.Public"));
     }
 
 }
