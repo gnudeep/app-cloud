@@ -337,7 +337,7 @@ function changeSelectedRevision(newRevision){
                 "<span class='fw-stack fw-lg btn-action-ico'>" +
                 "<i class='fw fw-circle-outline fw-stack-2x'></i>" +
                 "<i class='fw fw-edit fw-stack-1x'></i>" +
-                "</span> Edit Code" +
+                "</span> Open Ballerina Composer" +
                 "</div>" +
                 "</a>");
         }
@@ -374,7 +374,7 @@ function changeSelectedRevision(newRevision){
                 "<span class='fw-stack fw-lg btn-action-ico'>" +
                 "<i class='fw fw-circle-outline fw-stack-2x'></i>" +
                 "<i class='fw fw-edit fw-stack-1x'></i>" +
-                "</span> Edit Code" +
+                "</span> Open Ballerina Composer" +
                 "</div>" +
                 "</a>");
         }
