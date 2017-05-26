@@ -423,7 +423,7 @@ jagg.template("home", function(inputs, outputs, jagg) {
                     runtime:21,
                     appTypeName:"ballerina-composer",
                     applicationRevision:versionOfTool,
-                    conSpec:3,
+                    conSpec:4,
                     isNewVersion:true,
                     appCreationMethod:"custom",
                     imageId:ballerinaComposerImage

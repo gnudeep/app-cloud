@@ -21,6 +21,10 @@ public class VolumeMountInfo {
     private String name;
     private boolean readOnly;
     private String hostPath;
+    private String subPath;
+    private String nfsPath;
+    private String nfsServer;
+
 
     public String getMountPath() {
         return mountPath;
@@ -52,5 +56,29 @@ public class VolumeMountInfo {
 
     public void setHostPath(String hostPath) {
         this.hostPath = hostPath;
+    }
+
+    public String getSubPath() {
+        return subPath;
+    }
+
+    public void setSubPath(String subPath) {
+        this.subPath = subPath;
+    }
+
+    public String getNfsPath() {
+        return nfsPath;
+    }
+
+    public void setNfsPath(String nfsPath) {
+        this.nfsPath = nfsPath;
+    }
+
+    public String getNfsServer() {
+        return nfsServer;
+    }
+
+    public void setNfsServer(String nfsServer) {
+        this.nfsServer = nfsServer;
     }
 }

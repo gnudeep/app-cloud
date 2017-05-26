@@ -588,7 +588,7 @@ INSERT INTO `AC_RUNTIME_CONTAINER_SPECIFICATIONS` (`id`, `CON_SPEC_ID`) VALUES
 (19, 7),
 (20, 3),
 (12 , 5),
-(21, 3);
+(21, 4);
 
 -- -----------------------------------------------------
 -- Table `AppCloudDB`.`AC_CLOUD_APP_TYPE`

@@ -63,6 +63,7 @@ public class ManagementService {
             }
 
             //Adding package name for initial sample.
+            /*
             if(file.exists()) {
                 String dirPath =
                         System.getenv(Constants.SOURCE_LOCATION) + "/" + tenantDomain + "/" + appType + "/" + sourceDir;
@@ -78,7 +79,7 @@ public class ManagementService {
                     }
                 }
                 Files.write(Paths.get(dirPath + "/" + sample + ".bal"), newLines, StandardCharsets.UTF_8);
-            }
+            }*/
         } catch (IOException ex) {
             log.error(ex);
             return false;
