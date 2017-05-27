@@ -618,7 +618,7 @@ function getUserInputToBuildAndDeploy() {
         "&versionName=" + selectedRevision +
         "&conSpecCpu=" + conSpecCpu +
         "&conSpecMemory=" + conSpecMemory +
-        //"&replicas=" + replicaCount +
+        "&replicas=" + replicaCount +
         "&sourceLocation=" + sourceLocation +
         "&runtimeId=" + selectedApplicationRevision.runtimeId;
 
