@@ -20,25 +20,18 @@ var messageTimer;
 (function () {
     jagg.post = function(url, data, callback, error) {
         return jQuery.ajax({
-                       type:"POST",
-                       url:url,
-                       data:data,
-                       async:true,
-                       cache:false,
-                       success:callback,
-                       statusCode: {
-                           401: function isSessionExpired() {
-                                       jagg.infoMessage({
-                                           type: 'confirm',
-                                           modalStatus: true,
-                                           content: 'Your session has expired and will be reloaded shortly.',
-                                           okCallback: function() {
-                                               window.location.reload();
-                                           }
-                                       });
-                                   }
-                                },
-                       error:error
+            type: "POST",
+            url: url,
+            data: data,
+            async: true,
+            cache: false,
+            success: callback,
+            statusCode: {
+                401: function isUnauthorized() {
+                    location.reload();
+                }
+            },
+            error: error
         });
     };
 

@@ -169,14 +169,10 @@ var updateDeployment = function (appType, applicationName, versionName, runtimeI
     var fileServerAdminUsername = modManager.getPropertyValue(FILE_SERVER_ADMIN_USERNAME);
     var fileServerAdminPassword = modManager.getPropertyValue(FILE_SERVER_ADMIN_PASSWORD);
     var fileServerUrl = modManager.getPropertyValue(FILE_SERVER_URL);
-    log.info("updateDeployment : " + sourcePath);
     var appTypeExtension = sourcePath.substring(sourcePath.length - 3);
-    log.info("appTypeExtension : " + appTypeExtension);
     var artifactUrl = "http://" + fileServerAdminUsername + ":" + fileServerAdminPassword + "@" + fileServerUrl + "/" +
             modManager.getTenantDomain(true) + "/" + appType + "/" + applicationName + "/" + sourcePath;
-    log.info("artifactUrl : " + artifactUrl);
     var uploadedFileName = versionHashId + "." + appTypeExtension;
-    log.info("uploadedFileName---" + uploadedFileName);
     var imageName;
     var readyToTriggerDeployment = true;
     if (appType != CUSTOM && appType != "ballerina-composer") { //for custom images uploadedFileName=null

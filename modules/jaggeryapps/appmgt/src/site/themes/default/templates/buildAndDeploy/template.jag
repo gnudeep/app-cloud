@@ -41,10 +41,6 @@ jagg.template("buildAndDeploy", function (inputs, outputs, jagg) { %>
     encodedLabels = (encodedLabels == null) ? '{}' : encodedLabels;
     encodedEnvs = (encodedEnvs == null) ? '{}' : encodedEnvs;
 
-    var log = new Log();
-    log.info("encodedLabels --" + stringify(encodedLabels));
-    log.info("encodedEnvs --" + stringify(encodedEnvs));
-
     var parsedEnvs = JSON.parse(encodedEnvs);
     var runtimeProperties = [];
     for (var i = 0; i < parsedEnvs.length; i++) {
