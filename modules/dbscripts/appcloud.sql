@@ -98,7 +98,7 @@ INSERT INTO `AC_RUNTIME` (`id`, `name`, `image_name`, `tag`, `description`) VALU
 (16, 'Apache Tomcat 8.5.5 (Ubuntu 16.04/Open JDK 1.8.0_91)', 'tomcat', '8.5.5-ubuntu16.04-open-jdk1.8.0', 'OS:Ubuntu 16.04, Open JDK 1.8.0_91'),
 (17, 'OracleJDK 8 + WSO2 MSF4J 2.1.0', 'msf4j', '2.0.0', 'OS:alpine-java, Oracle JDK:8u102'),
 (18, 'Custom Docker http-8080 https-8443', 'custom', 'customtag', 'OS:Custom, JAVA Version:custom'),
-(19, 'Ballerina 0.8.0 (Alpine 3.4/Oracle JDK 1.8.0_112)', 'ballerina', '0.8.0', 'OS:Alpine 3.4, Oracle JDK 1.8.0_112'),
+(19, 'Ballerina 0.8.0 (Alpine 3.4/Oracle JDK 1.8.0_112)', 'ballerina', '0.8.x', 'OS:Alpine 3.4, Oracle JDK 1.8.0_112'),
 (20, 'Node.JS 7.7.1 (Alpine 3.4/Node.JS 7.7.1)', 'nodejs', '7.7.1', 'OS:Alpine 3.4, Node.JS 7.7.1'),
 (21, 'Ballrina Composer - 0.8.x', 'ballerina-composer', '0.8.x', 'OS:Alpine, Java Version: Oracle JDK 1.8.0_112');
 
@@ -588,7 +588,7 @@ INSERT INTO `AC_RUNTIME_CONTAINER_SPECIFICATIONS` (`id`, `CON_SPEC_ID`) VALUES
 (19, 7),
 (20, 3),
 (12 , 5),
-(21, 3);
+(21, 4);
 
 -- -----------------------------------------------------
 -- Table `AppCloudDB`.`AC_CLOUD_APP_TYPE`

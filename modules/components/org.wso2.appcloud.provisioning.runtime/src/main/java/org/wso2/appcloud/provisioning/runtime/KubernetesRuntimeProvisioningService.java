@@ -177,11 +177,12 @@ public class KubernetesRuntimeProvisioningService implements RuntimeProvisioning
                         for (VolumeMountInfo volumeMountInfo : volumeMounts) {
                             VolumeMount volumeMount = new VolumeMount(volumeMountInfo.getMountPath(),
                                     volumeMountInfo.getName(), volumeMountInfo.isReadOnly());
+                            volumeMount.setAdditionalProperty("subPath", volumeMountInfo.getSubPath());
                             containerVolumeMounts.add(volumeMount);
 
                             Volume volume = new Volume();
-                            volume.setName(volumeMount.getName());
-                            volume.setHostPath(new HostPathVolumeSource(volumeMountInfo.getHostPath()));
+                            volume.setName(volumeMountInfo.getName());
+                            volume.setNfs(new NFSVolumeSource(volumeMountInfo.getNfsPath(), false, volumeMountInfo.getNfsServer()));
                             volumes.add(volume);
                         }
                     }

@@ -74,7 +74,8 @@ jagg.template("application", function (inputs, outputs, jagg) {
     var allDBInfo = jQuery.parseJSON('<%=allDBInfo%>');
     var noOfDbs = <%=noOfDbs%>;
     var appTypeName = "<%=appType.type%>";
-    const APP_TYPE_EXTENSION = "<%=appType.extension%>";
+    var CURRENT_EXTENSION = "";
+    const APP_TYPE_EXTENSIONS = "<%=appType.extension%>";
     var applicationName = "<%=applicationName%>";
     var cloudSpecificApplicationRepresentation = "<%=cloudSpecificApplicationRepresentation%>";
     var runningApplicationCount = <%=runningApplicationCount%>;
@@ -298,11 +299,11 @@ jagg.template("application", function (inputs, outputs, jagg) {
                         formData.append('appCreationMethod', 'start-from-scratch');
                         formData.append('sourceLocation', 'true');
                         formData.append('artifactUrl', sampleArtifactURL);
-                        formData.append('uploadedFileName', "VERSION_HASH_ID." + APP_TYPE_EXTENSION);
+                        formData.append('uploadedFileName', "VERSION_HASH_ID." + CURRENT_EXTENSION);
                     } else if (uploadMethod === "url" ) {
                         formData.append('appCreationMethod', 'url');
                         formData.append('artifactUrl', $("#artifactUrl").val());
-                        formData.append('uploadedFileName', "VERSION_HASH_ID." + APP_TYPE_EXTENSION);
+                        formData.append('uploadedFileName', "VERSION_HASH_ID." + CURRENT_EXTENSION);
                     } else if (uploadMethod === "github" ) {
                         formData.append('appCreationMethod', 'github');
                         formData.append('gitRepoUrl', $("#gitRepoUrl").val());
@@ -819,7 +820,8 @@ jagg.template("application", function (inputs, outputs, jagg) {
             $("#url-upload-progress").html("<i class=\"fw fw-loader2 fw-spin\"></i>");
             isUploadUrlValid();
             var url = $("#artifactUrl").val();
-            var currentExtension = url.split(/[. ]+/).pop();
+            //var currentExtension = url.split(/[. ]+/).pop();
+            CURRENT_EXTENSION = url.split(/[. ]+/).pop();
 
         });
 
@@ -832,7 +834,7 @@ jagg.template("application", function (inputs, outputs, jagg) {
                 action:"isUploadUrlValid",
                 url:$("#artifactUrl").val(),
                 appTypeName: appTypeName,
-                appTypeExtension: APP_TYPE_EXTENSION
+                appTypeExtensions: APP_TYPE_EXTENSIONS
             },function (result) {
                if(JSON.parse(result) == true){
                     $("#url-upload-progress").html("<i class=\"fw fw-check\"></i>");
@@ -1069,6 +1071,30 @@ jagg.template("application", function (inputs, outputs, jagg) {
     }
 
     function validateArtifactURL(value){
+        var extensions = [];
+        extensions = APP_TYPE_EXTENSIONS.split("|");
+
+        var isValid = false;
+        for(var i = 0; i < extensions.length; i++) {
+            var pattern = "(ftp|http|https):\/\/(\\w+:{0,1}\\w*@)?(\\S+)(:[0-9]+)?(\/|\/([\\w#!:.?+=&%@!\\-\\/]))?\." + extensions[i];
+            var regex = new RegExp(pattern, "g");
+            if(value && regex.test(value)){
+                isValid = true;
+            }
+        }
+
+        if (isValid) {
+            if ($('#applicationName').val() && $('#applicationRevision').val()) {
+                $("#url-upload").attr("disabled", false);
+            }
+            return true;
+        } else {
+            $("#url-upload").attr("disabled", true);
+            uploadURLErrorMsg = "Invalid URL. The URL should be in the format : http:\/\/host-name\/file-location\/file-name." + APP_TYPE_EXTENSIONS;
+            return false;
+        }
+
+        /*
         var pattern = "(ftp|http|https):\/\/(\\w+:{0,1}\\w*@)?(\\S+)(:[0-9]+)?(\/|\/([\\w#!:.?+=&%@!\\-\\/]))?\." + APP_TYPE_EXTENSION;
         var regex = new RegExp(pattern, "g");
         if(value && regex.test(value)){
@@ -1081,6 +1107,7 @@ jagg.template("application", function (inputs, outputs, jagg) {
             uploadURLErrorMsg = "Invalid URL. The URL should be in the format : http:\/\/host-name\/file-location\/file-name." + APP_TYPE_EXTENSION;
             return false;
         }
+        */
     }
 
 //TODO :
@@ -1133,9 +1160,14 @@ jagg.template("application", function (inputs, outputs, jagg) {
     function validateArtifactType(filename) {
         var ext = getFileExtension(filename);
         var isValidExtension = false;
-        if (ext.toLowerCase() === APP_TYPE_EXTENSION) {
-            isValidExtension = true;
-        } else {
+        var extensions = APP_TYPE_EXTENSIONS.split("|");
+        for(var i = 0; i < extensions.length; i++) {
+            if (ext.toLowerCase() === extensions[i]) {
+                isValidExtension = true;
+            }
+        }
+
+        if (!isValidExtension) {
             artifactErrorMsg= "Invalid artifact selected for " + cloudSpecificApplicationRepresentation + " - Select a valid artifact";
             isValidExtension = false;
         }

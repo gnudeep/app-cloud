@@ -34,8 +34,8 @@ RUN unzip $BALLERINA_HOME/$BALLERINA_RUNTIME_DISTRIBUTION -d "$BALLERINA_HOME/" 
     rm $BALLERINA_HOME/$BALLERINA_RUNTIME_DISTRIBUTION && \
     chmod +x $BALLERINA_HOME/$BALLERINA_RUNTIME/bin/ballerina
 
-#USER wso2user
-
+RUN mkdir -p /home/wso2user/sample
+COPY sample/ /home/wso2user/sample/
 ENV MSF4J_JAR management-Service-3.0.0-SNAPSHOT.jar
 COPY mgt-app/target/management-Service-3.0.0-SNAPSHOT.jar "$MSF4J_HOME/"
 

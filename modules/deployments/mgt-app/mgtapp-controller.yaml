@@ -36,13 +36,10 @@ spec:
             value: /home/wso2user/sample
         volumeMounts:
         - mountPath: /home/wso2user/org
-          name: app-cloud-source
-        - mountPath: /home/wso2user/sample
-          name: app-cloud-sample
+          name: nfs
+          subPath: org
       volumes:
-      - name: app-cloud-source
-        hostPath:
-          path: /mnt/app-cloud/data/org
-      - name: app-cloud-sample
-        hostPath:
-          path: /mnt/app-cloud/data/sample
+      - name: nfs
+        nfs:
+          path: /mnt/share/app-cloud/
+          server: nfs.local.wso2.com

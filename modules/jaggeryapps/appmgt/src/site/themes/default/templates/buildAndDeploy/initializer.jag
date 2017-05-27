@@ -17,18 +17,11 @@
  *   under the License.
  */
 
-jagg.module("mgtapp", {
-    getSourceDirList: function () {
-        return jagg.require(jagg.getModulesDir() + "mgtapp/mgtapp.jag").getSourceDirList.apply(this, arguments);
-    },
-    createSourceLocation: function () {
-        return jagg.require(jagg.getModulesDir() + "mgtapp/mgtapp.jag").createSourceLocation.apply(this, arguments);
-    },
-    buildSource: function () {
-        return jagg.require(jagg.getModulesDir() + "mgtapp/mgtapp.jag").buildSource.apply(this, arguments);
-    },
-    listSourceDirs: function () {
-        return jagg.require(jagg.getModulesDir() + "mgtapp/mgtapp.jag").listSourceDirs.apply(this, arguments);
+jagg.initializer("buildAndDeploy", {
+
+    preInitialize:function () {
+
     }
 });
+
 %>

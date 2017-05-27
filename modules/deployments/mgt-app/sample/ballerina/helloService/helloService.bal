@@ -1,5 +1,3 @@
-package _pkgName;
-
 import ballerina.lang.messages;
 import ballerina.net.http;
 

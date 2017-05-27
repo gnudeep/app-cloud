@@ -34,8 +34,10 @@ spec:
             value: /mnt/data
         volumeMounts:
         - mountPath: /mnt/data
-          name: app-cloud-source
+          name: nfs
+          subPath: org
       volumes:
-      - name: app-cloud-source
-        hostPath:
-          path: /mnt/app-cloud/data/org
+      - name: nfs
+        nfs:
+          path: /mnt/share/app-cloud/
+          server: nfs.local.wso2.com

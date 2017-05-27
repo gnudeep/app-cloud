@@ -337,7 +337,7 @@ function changeSelectedRevision(newRevision){
                 "<span class='fw-stack fw-lg btn-action-ico'>" +
                 "<i class='fw fw-circle-outline fw-stack-2x'></i>" +
                 "<i class='fw fw-edit fw-stack-1x'></i>" +
-                "</span> Edit Code" +
+                "</span> Open Ballerina Composer" +
                 "</div>" +
                 "</a>");
         }
@@ -374,7 +374,7 @@ function changeSelectedRevision(newRevision){
                 "<span class='fw-stack fw-lg btn-action-ico'>" +
                 "<i class='fw fw-circle-outline fw-stack-2x'></i>" +
                 "<i class='fw fw-edit fw-stack-1x'></i>" +
-                "</span> Edit Code" +
+                "</span> Open Ballerina Composer" +
                 "</div>" +
                 "</a>");
         }
@@ -572,7 +572,7 @@ function updateVersionPopUp() {
         content: 'Do you want to build and deploy the latest code in ' + cloudSpecificApplicationRepresentation.toLowerCase() + ' version 1.0.0? ' +
         'If you want to keep the current version as it is, click No and then create a new version to deploy the latest code.?',
         yesCallback: function() {
-            buildAndDeploy();
+            getUserInputToBuildAndDeploy();
         }
     });
 }
@@ -604,6 +604,26 @@ function redirectAppHome() {
 function getVersionCount(){
     return Object.keys(application.versions).length;
 
+}
+
+function getUserInputToBuildAndDeploy() {
+    var buildAndDeployRevisionUrl = "buildAndDeploy.jag?appTypeName=" + application.applicationType +
+        "&applicationName=" + applicationName +
+        "&encodedLabels=" + encodedLabels +
+        "&encodedEnvs=" + encodedEnvs +
+        "&newVersion=true" +
+        //"&versionArray=" + encodeURI(versionArray) +
+        "&versionKey=" + selectedApplicationRevision.hashId +
+        "&applicationHashId=" + applicationKey +
+        "&versionName=" + selectedRevision +
+        "&conSpecCpu=" + conSpecCpu +
+        "&conSpecMemory=" + conSpecMemory +
+        "&replicas=" + replicaCount +
+        "&sourceLocation=" + sourceLocation +
+        "&runtimeId=" + selectedApplicationRevision.runtimeId;
+
+
+    window.location.replace(buildAndDeployRevisionUrl);
 }
 
 function buildAndDeploy(){

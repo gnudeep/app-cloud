@@ -269,7 +269,7 @@ jagg.template("home", function(inputs, outputs, jagg) {
                                   <span class="fw-stack fw-lg btn-action-ico">
                                     <i class="fw fw-circle-outline fw-stack-2x"></i>
                                     <i class="fw fw-edit fw-stack-1x"></i>
-                                  </span> Edit Code
+                                  </span> Open Ballerina Composer
                               </div>
                           </a>
                           <% } %>
@@ -423,7 +423,7 @@ jagg.template("home", function(inputs, outputs, jagg) {
                     runtime:21,
                     appTypeName:"ballerina-composer",
                     applicationRevision:versionOfTool,
-                    conSpec:3,
+                    conSpec:4,
                     isNewVersion:true,
                     appCreationMethod:"custom",
                     imageId:ballerinaComposerImage

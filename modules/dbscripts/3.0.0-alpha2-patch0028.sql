@@ -22,3 +22,6 @@
 UPDATE `AC_APP_TYPE` SET `description` = 'Allows you to deploy an integration scenario developed by Ballerina.' WHERE `id` = 8;
 UPDATE `AC_APP_TYPE` SET `description` = 'Allows you to deploy Java Microservices (MSF4J)' WHERE `id` = 2;
 
+-- update ballerina composer container spec
+UPDATE `AC_RUNTIME_CONTAINER_SPECIFICATIONS` SET `CON_SPEC_ID` = 4 WHERE `id` = 21;
+

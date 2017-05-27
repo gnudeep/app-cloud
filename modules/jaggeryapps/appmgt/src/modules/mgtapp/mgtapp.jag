@@ -31,7 +31,8 @@ var mgtAppPassword = modManager.getPropertyValue(MGT_APP_ADMIN_PASSWORD);
 var EventsManager = Packages.org.wso2.appcloud.core.EventsManager;
 var Event = Packages.org.wso2.appcloud.core.dto.Event;
 var headers = {
-    "Authorization": "Basic " + Base64.encode(mgtAppUsername + ":" + mgtAppPassword)
+    "Authorization": "Basic " + Base64.encode(mgtAppUsername + ":" + mgtAppPassword),
+    "Content-Type": "application/json"
 };
 var type = "json";
 
@@ -101,4 +102,43 @@ var addEvent = function(name, status, description, versionHashId) {
     }
 };
 
+var listSourceDirs = function (sourceLocation) {
+    var tanantDomain = modManager.getTenantDomain();
+    var sourcePath = tanantDomain + "/ballerina/" + sourceLocation;
+    var url = mgtAppUrl + "/listSourceDirs";
+    var retryCount = 5;
+    var result = null;
+    for (var i = 0; i < retryCount; i++) {
+        try {
+            var data = {path: sourcePath};
+            result = post(url, stringify(data), headers, "json");
+            if (result) {
+                break;
+            }
+        } catch (e) {
+            log.error(e);
+            setTimeout(function(){}, 2000);
+        }
+        i++;
+        log.info("calling listSourceDirs : " + i);
+    }
+
+    var jsonResponse = [];
+
+
+    var myArrayList = [];
+    if (result.data) {
+        myArrayList = result.data.myArrayList;
+        for (var j = 0; j < myArrayList.length; j++) {
+            var message = {
+                "key": myArrayList[j],
+                "value": myArrayList[j]
+            };
+
+            jsonResponse.push(message);
+        }
+    }
+
+    return jsonResponse;
+};
 %>
