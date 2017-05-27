@@ -1,0 +1,206 @@
+<%
+/*
+ * Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ *   WSO2 Inc. licenses this file to you under the Apache License,
+ *   Version 2.0 (the "License"); you may not use this file except
+ *   in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing,
+ *   software distributed under the License is distributed on an
+ *   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *   KIND, either express or implied.  See the License for the
+ *   specific language governing permissions and limitations
+ *   under the License.
+ */
+
+jagg.template("buildAndDeploy", function (inputs, outputs, jagg) { %>
+<%
+    var cloudSpecificApplicationRepresentation = outputs.cloudSpecificApplicationRepresentation;
+    var queryString = request.getQueryString();
+
+    var appTypeName = request.getParameter("appTypeName");
+    var applicationName = request.getParameter("applicationName");
+    var newVersion = request.getParameter("newVersion");
+    var versionArray = request.getParameter("versionArray");
+    var versionKey = request.getParameter("versionKey");
+    var applicationHashId = request.getParameter("applicationHashId");
+    var versionName = request.getParameter("versionName");
+    var conSpecCpu = request.getParameter("conSpecCpu");
+    var conSpecMemory = request.getParameter("conSpecMemory");
+    var replicas = request.getParameter("replicas");
+    var sourceLocation = request.getParameter("sourceLocation");
+    var runtimeId = request.getParameter("runtimeId");
+
+    var encodedLabels = request.getParameter("encodedLabels");
+    var encodedEnvs = request.getParameter("encodedEnvs");
+
+    encodedLabels = (encodedLabels == null) ? '{}' : encodedLabels;
+    encodedEnvs = (encodedEnvs == null) ? '{}' : encodedEnvs;
+
+    var log = new Log();
+    log.info("encodedLabels --" + stringify(encodedLabels));
+    log.info("encodedEnvs --" + stringify(encodedEnvs));
+
+    var parsedEnvs = JSON.parse(encodedEnvs);
+    var runtimeProperties = [];
+    for (var i = 0; i < parsedEnvs.length; i++) {
+        var runtimeProperty = {
+            "key": parsedEnvs[i].propertyName,
+            "value": parsedEnvs[i].propertyValue
+        };
+        runtimeProperties.push(runtimeProperty);
+    }
+    runtimeProperties = encodeURIComponent(stringify(runtimeProperties), "UTF-8");
+
+    %>
+
+<script>
+
+    var queryString = '<%=queryString%>';
+    var appTypeName = '<%=appTypeName%>';
+    var applicationName = '<%=applicationName%>';
+    var newVersion = '<%=newVersion%>';
+    var versionArray = '<%=versionArray%>';
+    var versionKey = '<%=versionKey%>';
+    var applicationHashId = '<%=applicationHashId%>';
+    var versionName = '<%=versionName%>';
+    var conSpecCpu = '<%=conSpecCpu%>';
+    var conSpecMemory = '<%=conSpecMemory%>';
+    var sourceLocation = '<%=sourceLocation%>';
+    var runtimeProperties = '<%=runtimeProperties%>';
+    var replicas = '<%=replicas%>';
+    var runtimeId = '<%=runtimeId%>';
+    var pollEventsKey = null;
+    var cloudSpecificApplicationRepresentation = '<%=cloudSpecificApplicationRepresentation%>';
+
+</script>
+
+<link rel="stylesheet" href="<%=jagg.getAbsoluteUrl(jagg.getThemeFile('css/datatables-1.10.7/jquery.dataTables.min.css'))%>">
+<link rel="stylesheet" href="<%=jagg.getAbsoluteUrl(jagg.getThemeFile('css/datatables-1.10.7/dataTables.responsive.css'))%>">
+<link rel="stylesheet" href="<%=jagg.getAbsoluteUrl(jagg.getThemeFile('css/datatables-1.10.7/jquery.dataTables.override.css'))%>">
+
+
+ <!-- BOF App factory menu actionbar -->
+<div class="action-bar" title="Back To Overview">
+    <a onclick="goBack();" class="btn-action">
+        <span class="fw-stack fw-lg btn-action-ico">
+            <i class="fw fw-circle-outline fw-stack-2x"></i>
+            <i class="fw fw-left-arrow fw-stack-1x"></i>
+        </span> Back to Overview
+    </a>
+    <a href="<%=jagg.getAbsoluteUrl("/site/pages/index.jag")%>" class="btn-action">
+        <span class="fw-stack fw-lg btn-action-ico">
+            <i class="fw fw-circle-outline fw-stack-2x"></i>
+            <i class="fa fa-mail-reply-all fa-stack-1x"></i>
+        </span> Cancel
+    </a>
+</div><!-- EOF App factory menu actionbar-->
+
+<div class="container-fluid app-content-section"><!--container starts-->
+    <div class="row">
+         <div class="col-md-12 msg-issues">
+            Select a .bal file that you want to deploy as a Ballerina service. </br>
+            For the moment, you cannot deploy the Main function of Ballerina in the Cloud.
+         </div>
+    </div>
+    <div class="row">
+            <div id="push"></div>
+            <div class="col-md-7 forms cloud-tab">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <!--<li role="presentation" class="active"><a href="#service-bal-file" aria-controls="service-bal-file" role="tab" data-toggle="tab">Bal File</a></li>-->
+                        <!--<li role="presentation"><a href="#service-package" aria-controls="service-package" role="tab" data-toggle="tab">Package</a></li>-->
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+
+                        <div role="tabpanel" class="tab-pane active" id="service-bal-file">
+                            <div class="from-group-margin">
+                                <label for="service-bal-file" id="lblservice-bal-file">Select a .bal file</label>
+                            </div>
+                            <div class="from-group-margin">
+                                <div class="radio" id="fileList">
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <a type="button" class="cu-btn cu-btn-sm cu-btn-blue" id="deploy-service-bal-file" onclick="deployServiceBalFile();">
+                                <span class="fw-stack fw-lg btn-action-ico">
+                                    <i class="fw fw-circle-outline fw-stack-2x"></i>
+                                    <i class="fw fw-add fw-stack-1x"></i>
+                                </span>
+                                    Deploy
+                                </a>
+                            </div>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane hide" id="service-package">
+                            <div class="from-group-margin">
+                                <label for="service-package" id="lblservice-package">Select a package</label>
+                            </div>
+                            <div class="from-group-margin">
+                                <div class="radio" id="packageList">
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <a type="button" class="cu-btn cu-btn-sm cu-btn-blue" id="deploy-service-package" onclick="deployServicePackage();">
+                                <span class="fw-stack fw-lg btn-action-ico">
+                                    <i class="fw fw-circle-outline fw-stack-2x"></i>
+                                    <i class="fw fw-add fw-stack-1x"></i>
+                                </span>
+                                    Deploy
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+</div><!-- /.container -->
+<div class="clearfix"></div>
+<div id="push"></div>
+</div><!-- /.right pane -->
+</div><!-- /.container -->
+
+
+
+    </div>
+    <div class="clearfix"></div>
+    <div id="push"></div>
+<script src="<%=jagg.getAbsoluteUrl(jagg.getThemeFile('js/bootstrap-3.2.0/bootstrap.min.js'))%>"></script>
+<script src="<%=jagg.getAbsoluteUrl(jagg.getThemeFile('js/datatables-1.10.7/jquery.dataTables.min.js'))%>"></script>
+<script src="<%=jagg.getAbsoluteUrl(jagg.getThemeFile('js/datatables-1.10.7/dataTables.responsive.min.js'))%>"></script>
+<script src="<%=jagg.getAbsoluteUrl(jagg.getThemeFile('js/datatables-1.10.7/jquery.dataTables.columnFilter.js'))%>"></script>
+<script src="<%=jagg.getAbsoluteUrl(jagg.getThemeFile('templates/buildAndDeploy/js/buildAndDeploy.js'))%>"></script>
+
+<!-- --------------------------------------- Overlay ----------------------------------------- -->
+    <div class="modal fade build-logs-modal" id="app_creation_progress_modal">
+        <div class="modal-dialog modal-dialog-margin-top-md ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modal-title"></h3>
+                    <span class="app-creation-loader" id="app-creation-header-loader">
+                        <i class="fw fw-loader2 fw-spin fw-2x pull-right"></i>
+                    </span>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div id="progress_table" class="col-xs-12 col-md-12 section-title">
+                        </div>
+                    </div>
+                </div>
+            </div>
+       </div><!-- /.modal-content -->
+     </div><!-- /.modal -->
+
+<%
+}); %>
+

@@ -17,19 +17,17 @@
 package org.wso2.appcloud.mgt;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.json.JSONArray;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Response;
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Path("/")
@@ -88,43 +86,6 @@ public class ManagementService {
     }
 
     @GET
-    @Path("/downloadArtifact/{tenantDomain}/{appType}/{sourceDir}/{fileType}")
-    @Produces("text/plain")
-    public Response getArtifact(
-            @PathParam("tenantDomain") String tenantDomain,
-            @PathParam("appType") String appType,
-            @PathParam("sourceDir") String sourceDir,
-            @PathParam("fileType") String fileType) {
-
-        String dirPath = System.getenv(Constants.SOURCE_LOCATION) + "/" + tenantDomain + "/" + appType + "/" + sourceDir;
-        File dir = new File(dirPath);
-
-        File[] fileList = dir.listFiles(new FilenameFilter() {
-            public boolean accept(File dir, String name) {
-                return name.endsWith(fileType);
-            }
-        });
-
-        for(File file : fileList) {
-            Response.ResponseBuilder response = Response.ok((Object) file);
-            response.header("Content-Disposition","attachment; filename=\"" +file.getName()+ "\"");
-            return response.build();
-        }
-
-        return null;
-    }
-
-    @GET
-    @Path("/listSourceDirs/{tenantDomain}/{appType}")
-    public String[] getBuiltArtifact(
-            @PathParam("tenantDomain") String tenantDomain,
-            @PathParam("appType") String appType) {
-
-        File file = new File(System.getenv(Constants.SOURCE_LOCATION) + "/" + tenantDomain + "/" + appType);
-        return file.list();
-    }
-
-    @GET
     @Path("/buildService/{tenantDomain}/{appType}/{sourceDir}")
     @Produces("text/plain")
     public boolean buildService(
@@ -176,4 +137,51 @@ public class ManagementService {
             return false;
         }
     }
+
+    @POST
+    @Path("/listSourceDirs")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public JSONArray listSourceDirs(FileObj fileObj) {
+        String sourcePath = fileObj.getPath();
+        String startingLocation = System.getenv(Constants.SOURCE_LOCATION) + "/" + sourcePath + "/";
+        log.info("Source location : " + startingLocation);
+
+        List<String> fileList = new ArrayList<>();
+        try {
+            File file = new File(startingLocation);
+            Collection<File> files = FileUtils.listFiles(file, new IOFileFilter() {
+
+                @Override public boolean accept(File file) {
+                    return file.getName().endsWith(".bal");
+                }
+
+                @Override public boolean accept(File file, String s) {
+                    return false;
+                }
+            }, new IOFileFilter() {
+                @Override public boolean accept(File file) {
+                    return !file.getName().contains(".target");
+                }
+
+                @Override public boolean accept(File file, String s) {
+                    return false;
+                }
+            });
+
+            for (File tmpFile : files) {
+                log.info("File : " + tmpFile.getCanonicalPath().substring(startingLocation.length()));
+                fileList.add(tmpFile.getCanonicalPath().substring(startingLocation.length()));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String[] fileArray = fileList.toArray(new String[fileList.size()]);
+        JSONArray array = new JSONArray(fileArray);
+        return array;
+
+    }
+
+
 }

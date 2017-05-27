@@ -721,6 +721,7 @@ var log = new Log();
         }
 
     } else if (action == "buildAndDeploy"){
+        var selectedOption = request.getParameter("selectedOption");
         var applicationName = request.getParameter("applicationName");
         var appType = request.getParameter("appType");
         var versionKey = request.getParameter("versionKey");
@@ -732,13 +733,13 @@ var log = new Log();
         var sourceLocation = request.getParameter("sourceLocation");
         var replicas = request.getParameter("replicas");
         var applicationHashId = request.getParameter("applicationHashId");
-        var mgtAppMod = jagg.module("mgtapp");
         try {
-            var buildStatus = mgtAppMod.buildSource(appType, applicationName, versionKey);
+            var sourcePath = selectedOption;
+            var buildStatus = true;
             if (buildStatus) {
                 applicationModule.updateDeployment(appType, applicationName, versionName, runtimeId,
                         runtimeProperties, conSpecMemory, replicas, conSpecCpu, sourceLocation, applicationHashId,
-                        versionKey, START_FROM_SCRATCH);
+                        versionKey, START_FROM_SCRATCH, sourcePath);
             }
             print(true);
         } catch (e) {

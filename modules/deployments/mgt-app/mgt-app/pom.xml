@@ -18,4 +18,11 @@
         <microservice.mainClass>org.wso2.appcloud.mgt.Application</microservice.mainClass>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20160212</version>
+        </dependency>
+    </dependencies>
 </project>
