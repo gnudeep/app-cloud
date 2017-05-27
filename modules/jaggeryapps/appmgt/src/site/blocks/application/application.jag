@@ -349,7 +349,6 @@ var log = new Log();
         var applicationType = applicationModule.getApplication(applicationHashId).applicationType;
         var versionKey = applicationModule.getVersionHashId(applicationName, applicationRevision);
         var isApplicationStartPossible = false;
-        log.info(stringify("start application----apptype ----: " + applicationType));
         if (applicationType != "ballerina-composer") {
             isApplicationStartPossible = true;
         } else {

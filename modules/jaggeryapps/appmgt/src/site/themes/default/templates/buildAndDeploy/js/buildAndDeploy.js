@@ -76,7 +76,6 @@ function buildAndDeploy(selectedOption) {
         runtimeProperties:runtimeProperties,
         runtimeId:runtimeId
     },function (result) {
-        alert("result came");
         var status = JSON.parse(result);
         if (status) {
             jagg.message({content: "Application successfully updated", type: 'success', id:'view_log'});
