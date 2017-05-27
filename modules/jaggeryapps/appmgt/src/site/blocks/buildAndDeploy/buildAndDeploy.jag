@@ -17,18 +17,28 @@
  *   under the License.
  */
 
-jagg.module("mgtapp", {
-    getSourceDirList: function () {
-        return jagg.require(jagg.getModulesDir() + "mgtapp/mgtapp.jag").getSourceDirList.apply(this, arguments);
-    },
-    createSourceLocation: function () {
-        return jagg.require(jagg.getModulesDir() + "mgtapp/mgtapp.jag").createSourceLocation.apply(this, arguments);
-    },
-    buildSource: function () {
-        return jagg.require(jagg.getModulesDir() + "mgtapp/mgtapp.jag").buildSource.apply(this, arguments);
-    },
-    listSourceDirs: function () {
-        return jagg.require(jagg.getModulesDir() + "mgtapp/mgtapp.jag").listSourceDirs.apply(this, arguments);
+include("/jagg/jagg.jag");
+include("/jagg/constants.jag");
+
+
+(function () {
+    var result,
+            action = request.getParameter("action"),
+            mgtapp = jagg.module("mgtapp"),
+            site = require("/site/conf/site.json");
+    if (action == "listSourceDirs") {
+        var sourceLocation = request.getParameter("sourceLocation");
+        var dirList = mgtapp.listSourceDirs(sourceLocation);
+        if (dirList) {
+            print(dirList);
+        } else {
+            response.status = 404;
+            response.content = "Error while listing source dir";
+        }
+    } else {
+        throw new Error("No action specified");
     }
-});
+
+}());
+
 %>

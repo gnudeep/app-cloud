@@ -17,18 +17,23 @@
  *   under the License.
  */
 
-jagg.module("mgtapp", {
-    getSourceDirList: function () {
-        return jagg.require(jagg.getModulesDir() + "mgtapp/mgtapp.jag").getSourceDirList.apply(this, arguments);
+include('/jagg/constants.jag');
+include("/jagg/jagg.jag");
+
+jagg.block("buildAndDeploy", {
+    initialize:function (data) {
+
     },
-    createSourceLocation: function () {
-        return jagg.require(jagg.getModulesDir() + "mgtapp/mgtapp.jag").createSourceLocation.apply(this, arguments);
+    getInputs:function () {
+
     },
-    buildSource: function () {
-        return jagg.require(jagg.getModulesDir() + "mgtapp/mgtapp.jag").buildSource.apply(this, arguments);
-    },
-    listSourceDirs: function () {
-        return jagg.require(jagg.getModulesDir() + "mgtapp/mgtapp.jag").listSourceDirs.apply(this, arguments);
+
+    getOutputs:function (inputs) {
+        var modManager = jagg.module("manager");
+        var cloudSpecificApplicationRepresentation = modManager.getCloudTypeProperties().cloudSpecificApplicationRepresentation;
+        return {
+            "cloudSpecificApplicationRepresentation" : cloudSpecificApplicationRepresentation
+        }
     }
 });
 %>
