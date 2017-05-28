@@ -188,7 +188,7 @@ function displayApplicationInactiveMessage() {
                      modalStatus: true,
                      type: 'warning',
                      timeout: 15000,
-                     content: "<b>This " + cloudSpecificApplicationRepresentation.toLowerCase() + " is stopped because 12 hours have passed after it was last started.</b></br>" +
+                     content: "<b>This " + cloudSpecificApplicationRepresentation.toLowerCase() + " is stopped because 9 hours have passed after it was last started.</b></br>" +
                               "This is a limitation of free accounts in " + pageTitle + "</br> To restart, click the <b>Start</b>. button.</br>" +
                               "<a href='"+requestNewAppTypeURL+"' target='_blank'>Contact us</a> if you need any help."
                  });

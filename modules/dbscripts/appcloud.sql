@@ -100,7 +100,8 @@ INSERT INTO `AC_RUNTIME` (`id`, `name`, `image_name`, `tag`, `description`) VALU
 (18, 'Custom Docker http-8080 https-8443', 'custom', 'customtag', 'OS:Custom, JAVA Version:custom'),
 (19, 'Ballerina 0.8.0 (Alpine 3.4/Oracle JDK 1.8.0_112)', 'ballerina', '0.8.x', 'OS:Alpine 3.4, Oracle JDK 1.8.0_112'),
 (20, 'Node.JS 7.7.1 (Alpine 3.4/Node.JS 7.7.1)', 'nodejs', '7.7.1', 'OS:Alpine 3.4, Node.JS 7.7.1'),
-(21, 'Ballrina Composer - 0.8.x', 'ballerina-composer', '0.8.x', 'OS:Alpine, Java Version: Oracle JDK 1.8.0_112');
+(21, 'Ballrina Composer - 0.8.x', 'ballerina-composer', '0.8.x', 'OS:Alpine, Java Version: Oracle JDK 1.8.0_112'),
+(22, 'Custom Docker http-8280 https-8243','custom','customtag','OS:Custom, JAVA Version:custom');
 
 -- -----------------------------------------------------
 -- Table `AppCloudDB`.`AC_APPLICATION`
@@ -277,7 +278,8 @@ INSERT INTO `AC_APP_TYPE_RUNTIME` (`app_type_id`, `runtime_id`) VALUES
 (7, 18),
 (8, 19),
 (9, 20),
-(10, 21);
+(10, 21),
+(7, 22);
 
 
 -- -----------------------------------------------------
@@ -532,7 +534,9 @@ INSERT INTO `AC_RUNTIME_TRANSPORT` (`transport_id`, `runtime_id`) VALUES
 (11, 21),
 (12, 21),
 (13, 21),
-(14, 21);
+(14, 21),
+(7, 22),
+(8, 22);
 
 INSERT INTO `AC_CONTAINER_SPECIFICATIONS` (`CON_SPEC_NAME`, `CPU`, `MEMORY`, `COST_PER_HOUR`) VALUES
 ('128MB RAM and 0.1x vCPU', 100, 128, 1),
@@ -588,7 +592,8 @@ INSERT INTO `AC_RUNTIME_CONTAINER_SPECIFICATIONS` (`id`, `CON_SPEC_ID`) VALUES
 (19, 7),
 (20, 3),
 (12 , 5),
-(21, 4);
+(21, 4),
+(22, 4);
 
 -- -----------------------------------------------------
 -- Table `AppCloudDB`.`AC_CLOUD_APP_TYPE`
