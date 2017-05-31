@@ -65,7 +65,7 @@ jagg.template("options", function(inputs, outputs, jagg) {
         </h2>
 
         <div class="list-group">
-        <% if (appTypeName == "ballerina") { %>
+        <% if (appTypeName == BALLERINA) { %>
           <a href="#" class="list-group-item list-group-item-action flex-column align-items-start option-block margin-bottom-5">
           <div class="ribbon-wrapper"><div class="ribbon">Beta</div></div>
             <div class="d-flex w-100 justify-content-between">
@@ -108,7 +108,7 @@ jagg.template("options", function(inputs, outputs, jagg) {
           </a>
           <a href="#" class="list-group-item list-group-item-action flex-column align-items-start option-block margin-bottom-5">
             <div class="d-flex w-100 justify-content-between">
-              <h4 class="margin-bottom-10 font-size-20">Tryout Samples</h4>
+              <h4 class="margin-bottom-10 font-size-20">Try out Samples</h4>
             </div>
             <p class="margin-bottom-10 desc-color">Deploys a sample application to the Cloud. To try out the sample, use the launch URL on the application’s homepage.
 </p>
