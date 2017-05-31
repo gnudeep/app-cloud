@@ -104,7 +104,7 @@ var addEvent = function(name, status, description, versionHashId) {
 
 var listSourceDirs = function (sourceLocation) {
     var tanantDomain = modManager.getTenantDomain();
-    var sourcePath = tanantDomain + "/ballerina/" + sourceLocation;
+    var sourcePath = tanantDomain + "/" + BALLERINA + "/" + sourceLocation;
     var url = mgtAppUrl + "/listSourceDirs";
     var retryCount = 5;
     var result = null;

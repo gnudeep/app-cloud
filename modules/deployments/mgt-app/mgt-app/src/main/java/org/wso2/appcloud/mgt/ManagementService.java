@@ -170,8 +170,23 @@ public class ManagementService {
             });
 
             for (File tmpFile : files) {
-                log.info("File : " + tmpFile.getCanonicalPath().substring(startingLocation.length()));
-                fileList.add(tmpFile.getCanonicalPath().substring(startingLocation.length()));
+                String content = FileUtils.readFileToString(tmpFile);
+                if (content.contains("main(")) {
+                    // main found
+                    continue;
+                }
+
+                if (content.contains("package")) {
+                    // package found
+                    continue;
+                }
+
+                if (content.contains("service")) {
+                    // service found
+                    log.info("File : " + tmpFile.getCanonicalPath().substring(startingLocation.length()));
+                    fileList.add(tmpFile.getCanonicalPath().substring(startingLocation.length()));
+                }
+
             }
         } catch (IOException e) {
             e.printStackTrace();
