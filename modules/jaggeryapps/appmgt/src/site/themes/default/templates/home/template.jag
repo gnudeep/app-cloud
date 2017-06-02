@@ -30,7 +30,7 @@ jagg.template("home", function(inputs, outputs, jagg) {
     var keyArray = Object.keys(versions);
     var versionArray = [];
     for (var x = 0; x < keyArray.length; x++) {
-        if ("ballerina-composer" != versions[keyArray[x]].versionName) {
+        if (BALLERINA_COMPOSER != versions[keyArray[x]].versionName) {
             versionArray.push(versions[keyArray[x]].versionName);
         }
     }
@@ -112,6 +112,8 @@ jagg.template("home", function(inputs, outputs, jagg) {
     var sourceLocation = "<%=sourcelocation%>";
     var runtimeProperties = "<%=runtimeProperties%>";
     var isBallerinaComposerAvailable = <%=isBallerinaComposerAvailable%>
+    var BALLERINA_COMPOSER = "<%=BALLERINA_COMPOSER%>";
+    var BALLERINA = "<%=BALLERINA%>";
 
 </script>
 
@@ -253,7 +255,7 @@ jagg.template("home", function(inputs, outputs, jagg) {
                       </div>
                       <div class="col-xs-12 col-md-12 col-lg-5 overview-version-btn">
 
-                         <% if (application.applicationType == "ballerina" && selectedApplicationRevision.sourceLocation != null) { %>
+                         <% if (application.applicationType == BALLERINA && selectedApplicationRevision.sourceLocation != null) { %>
                              <% if (versions[BALLERINA_COMPOSER] != null) { %>
                               <a id="update" onclick="updateVersionPopUp();">
                                   <div class="btn-create-version">
@@ -377,7 +379,7 @@ jagg.template("home", function(inputs, outputs, jagg) {
 
         //newTab.document.write(toolLoadingPage);
         var applicationNameOfTool = applicationName;
-        var versionOfTool = "ballerina-composer";
+        var versionOfTool = BALLERINA_COMPOSER;
         executeAsync(drawProgressWindowForTool("Starting ..."));
         // check whether ballerina-composer version is created already
         jagg.post("../blocks/application/application.jag", {
@@ -421,7 +423,7 @@ jagg.template("home", function(inputs, outputs, jagg) {
                     action:"createApplication",
                     applicationName:applicationNameOfTool,
                     runtime:21,
-                    appTypeName:"ballerina-composer",
+                    appTypeName:BALLERINA_COMPOSER,
                     applicationRevision:versionOfTool,
                     conSpec:4,
                     isNewVersion:true,
@@ -560,7 +562,7 @@ jagg.template("home", function(inputs, outputs, jagg) {
        jagg.post("../blocks/application/application.jag", {
             action:"getApplicationCreationEvents",
             applicationName:applicationName,
-            applicationRevision:"ballerina-composer"
+            applicationRevision:BALLERINA_COMPOSER
 
         },function (result) {
             var result = jQuery.parseJSON(result);
@@ -568,7 +570,7 @@ jagg.template("home", function(inputs, outputs, jagg) {
                 jagg.post("../blocks/application/application.jag", {
                     action: "getVersionHashId",
                     applicationName: applicationName,
-                    applicationRevision: "ballerina-composer"
+                    applicationRevision: BALLERINA_COMPOSER
                 }, function(result) {
                     if (result != null) {
                         toolVersionHashId = result;
@@ -637,12 +639,12 @@ jagg.template("home", function(inputs, outputs, jagg) {
                         clearInterval(pollEventsOfToolKey);
                         setTimeout(redirectAppHome, 4250);
                         function redirectAppHome(){
-                            deleteAppCreationEvents("ballerina-composer");
+                            deleteAppCreationEvents(BALLERINA_COMPOSER);
 
                             jagg.post("../blocks/application/application.jag", {
                                 action:"getVersionHashId",
                                 applicationName:applicationName,
-                                applicationRevision:"ballerina-composer"
+                                applicationRevision:BALLERINA_COMPOSER
                             },function (result) {
                                 if (result != null) {
                                     toolVersionHashId = result;

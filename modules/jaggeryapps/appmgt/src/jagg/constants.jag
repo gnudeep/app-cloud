@@ -144,6 +144,12 @@ var MGT_APP_ADMIN_PASSWORD="MgtAppAdminPassword";
 var BALLERINA_COMPOSER_BASE_IMAGE="ballerina-composer_base_image";
 var BALLERINA_COMPOSER_BASE_IMAGE_TAG="ballerina-composer_base_image_tag";
 var BALLERINA_COMPOSER = "ballerina-composer";
+var BALLERINA = "ballerina";
+var BALLERINA_COMPOSER_SAMPLE = "ballerina-composer_sample";
+var BALLERINA_SOURCE_PATH = "ballerina-composer_source_path";
+var VOLUME_MOUNT_NFS = "nfs";
+var VOLUME_MOUNT_NFS_PATH = "nfs_path";
+var VOLUME_MOUNT_NFS_SERVER = "nfs_server";
 var TOOL_PREFIX = "_tools";
 var FILE_SERVER_URL = "FileServerURL";
 var FILE_SERVER_ADMIN_USERNAME = "FileServerAdminUsername";
@@ -151,4 +157,7 @@ var FILE_SERVER_ADMIN_PASSWORD = "FileServerAdminPassword";
 var TARGET_DIRECTORY = "/target/";
 var START_FROM_SCRATCH = "start-from-scratch";
 var SEARCH_CRITERIA_ALL = "all";
+
+var APP_LAUNCH_URL_PUBLIC = "ApplicationLaunchBaseURL.Public";
+var APP_LAUNCH_URL_PRIVATE = "ApplicationLaunchBaseURL.Private";
 %>

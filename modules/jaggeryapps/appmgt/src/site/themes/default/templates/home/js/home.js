@@ -322,7 +322,7 @@ function changeSelectedRevision(newRevision){
     // Change version status in UI
     if(selectedApplicationRevision.status == APPLICATION_RUNNING){
         $(".overview-version-btn").empty();
-        if (application.applicationType == "ballerina" && selectedApplicationRevision.sourceLocation != null) {
+        if (application.applicationType == BALLERINA && selectedApplicationRevision.sourceLocation != null) {
             $(".overview-version-btn").html(
                 "<a id='update' onclick='updateVersionPopUp();'>" +
                 "<div class='btn-create-version'>" +
@@ -359,7 +359,7 @@ function changeSelectedRevision(newRevision){
 
     } else if(selectedApplicationRevision.status == APPLICATION_STOPPED || selectedApplicationRevision.status == APPLICATION_INACTIVE){
         $(".overview-version-btn").empty();
-        if (application.applicationType == "ballerina" && selectedApplicationRevision.sourceLocation != null) {
+        if (application.applicationType == BALLERINA && selectedApplicationRevision.sourceLocation != null) {
             $(".overview-version-btn").html(
                 "<a id='update' onclick='updateVersionPopUp()'>" +
                 "<div class='btn-create-version'>" +
