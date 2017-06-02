@@ -388,11 +388,12 @@ public class KubernetesRuntimeProvisioningService implements RuntimeProvisioning
                 /** Sorting the podList
                  */
                 List<Pod> unsortedList = podList.getItems();
-                Collections.sort( unsortedList, new Comparator<Pod>() {
+                Collections.sort(unsortedList, new Comparator<Pod>() {
                     //Sort podList by app creation time
                     @Override
-                    public int compare(Pod a, Pod b) {
-                        return a.getMetadata().getCreationTimestamp().toString().compareTo(b.getMetadata().getCreationTimestamp().toString());
+                    public int compare(Pod firstPod, Pod secondPod) {
+                        return firstPod.getMetadata().getCreationTimestamp().toString()
+                                       .compareTo(secondPod.getMetadata().getCreationTimestamp().toString());
                     }
                 });
 
@@ -1132,11 +1133,12 @@ public class KubernetesRuntimeProvisioningService implements RuntimeProvisioning
             for (int i = 0; i < jsonArray.length(); i++) {
                 jsonValues.add(jsonArray.getJSONObject(i));    // put all JSON objects to the array list
             }
-            Collections.sort( jsonValues, new Comparator<JSONObject>() {
+            Collections.sort(jsonValues, new Comparator<JSONObject>() {
                 //Sort by app creation time
                 @Override
-                public int compare(JSONObject a, JSONObject b) {
-                    return a.get("creationTime").toString().compareTo(b.get("creationTime").toString());
+                public int compare(JSONObject firstObject, JSONObject secondObject) {
+                    return firstObject.get("creationTime").toString()
+                                      .compareTo(secondObject.get("creationTime").toString());
                 }
             });
             for (int i = 0; i < jsonArray.length(); i++) {
