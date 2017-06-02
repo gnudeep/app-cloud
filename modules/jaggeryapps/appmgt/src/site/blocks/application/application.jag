@@ -349,7 +349,7 @@ var log = new Log();
         var applicationType = applicationModule.getApplication(applicationHashId).applicationType;
         var versionKey = applicationModule.getVersionHashId(applicationName, applicationRevision);
         var isApplicationStartPossible = false;
-        if (applicationType != BALLERINA_COMPOSER) {
+        if (applicationType == BALLERINA_COMPOSER) {
             isApplicationStartPossible = true;
         } else {
             isApplicationStartPossible = jagg.module("throttling").isApplicationStartPossible(versionKey);
