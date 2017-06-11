@@ -39,7 +39,7 @@ import (
 	"k8s.io/kubernetes/pkg/controller/framework"
 	"k8s.io/kubernetes/pkg/fields"
 	kubectl_util "k8s.io/kubernetes/pkg/kubectl/cmd/util"
-	"k8s.io/kubernetes/pkg/util/flowcontrol"
+	"k8s.io/kubernetes/pkg/util"
 	"k8s.io/kubernetes/pkg/util/intstr"
 	"k8s.io/kubernetes/pkg/util/wait"
 	"k8s.io/kubernetes/pkg/util/workqueue"
@@ -161,13 +161,15 @@ var (
 	sendEmailTo = flags.String("send-email-to", "", "comma separated email addresses to send HAProxy error mails")
 
 	cloudmgtRestAPIRequestTimeout = flags.Int("cloudmgt-rest-api-request-timeout", 4, "request timeout when invoking cloudmgt rest API")
+
+
 )
 
 // service encapsulates a single backend entry in the load balancer config.
 // The Ep field can contain the ips of the pods that make up a service, or the
 // clusterIP of the service itself (in which case the list has a single entry,
 // and kubernetes handles loadbalancing across the service endpoints).
-type service struct {
+type 	service struct {
 	Name string
 	Ep   []string
 
@@ -420,7 +422,7 @@ type loadBalancerController struct {
 	svcController     *framework.Controller
 	svcLister         cache.StoreToServiceLister
 	epLister          cache.StoreToEndpointsLister
-	reloadRateLimiter flowcontrol.RateLimiter
+	reloadRateLimiter util.RateLimiter
 	template          string
 	targetService     string
 	forwardServices   bool
@@ -641,6 +643,7 @@ func (lbc *loadBalancerController) sync(dryRun bool) error {
 	if len(httpSvc) == 0 && len(httpsTermSvc) == 0 && len(tcpSvc) == 0 {
 		return nil
 	}
+
 	if err := lbc.cfg.write(
 		map[string][]service{
 			"http":      httpSvc,
@@ -652,12 +655,32 @@ func (lbc *loadBalancerController) sync(dryRun bool) error {
 	if dryRun {
 		return nil
 	}
+
+	if reflect.DeepEqual(httpSvc, httpSvcOld) && reflect.DeepEqual(httpsTermSvc, httpsTermSvcOld){
+		return nil
+	}
+
+	httpSvcTmp := make([]service, len(httpSvc))
+	httpsTermSvcTmp := make([]service, len(httpsTermSvc))
+	tcpSvcTmp := make([]service, len(tcpSvc))
+
+	httpSvcOld = httpSvcTmp
+        httpsTermSvcOld = httpsTermSvcTmp
+	tcpSvcOld = tcpSvcTmp
+
+	copy(httpSvcOld, httpSvc)
+	copy(httpsTermSvcOld, httpsTermSvc)
+	copy(tcpSvcOld, tcpSvc)
+
+	glog.Infof("Realoding service load balancer")
+
 	return lbc.cfg.reload()
 }
 
 // worker handles the work queue.
 func (lbc *loadBalancerController) worker() {
 	for {
+		//time.Sleep(30000 * time.Millisecond)
 		key, _ := lbc.queue.Get()
 		//glog.Infof("Sync triggered by service %v", key)
 		if err := lbc.sync(false); err != nil {
@@ -674,7 +697,7 @@ func newLoadBalancerController(cfg *loadBalancerConfig, kubeClient *unversioned.
 		cfg:    cfg,
 		client: kubeClient,
 		queue:  workqueue.New(),
-		reloadRateLimiter: flowcontrol.NewTokenBucketRateLimiter(
+		reloadRateLimiter: util.NewTokenBucketRateLimiter(
 			reloadQPS, int(reloadQPS)),
 		targetService:   *targetService,
 		forwardServices: *forwardServices,
@@ -795,6 +818,11 @@ func dryRun(lbc *loadBalancerController) {
 	}
 }
 
+
+var httpSvcOld []service
+var httpsTermSvcOld []service
+var tcpSvcOld []service
+
 func main() {
 	clientConfig := kubectl_util.DefaultClientConfig(flags)
 	flags.Parse(os.Args)
@@ -847,13 +875,14 @@ func main() {
 	// TODO: Handle multiple namespaces
 	lbc := newLoadBalancerController(cfg, kubeClient, namespace, tcpSvcs)
 
+
 	go lbc.epController.Run(wait.NeverStop)
 	go lbc.svcController.Run(wait.NeverStop)
 	if *dry {
 		dryRun(lbc)
 	} else {
 		lbc.cfg.reload()
-		wait.Until(lbc.worker, 10*time.Second, wait.NeverStop)
+		wait.Until(lbc.worker, time.Second, wait.NeverStop)
 	}
 
 }
